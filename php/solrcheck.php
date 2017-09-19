@@ -57,8 +57,6 @@ else if ($_POST['postType'] == "advanced"){
   //TODO: put everything here
 }
 
-//start building query
-
 
 //query settings
 $query->setRows($rows); //output length
