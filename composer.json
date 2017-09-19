@@ -1,0 +1,13 @@
+{
+    "name": "eric/vgt",
+    "authors": [
+        {
+            "name": "Eric Schneider",
+            "email": "ericjs.personal@gmail.com"
+        }
+    ],
+    "require": 
+	{
+		"solarium/solarium": "3.6.0"
+	}
+}
