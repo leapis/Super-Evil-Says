@@ -63,8 +63,8 @@ div.devpost-header-left{
   width: calc(100% - 105px);
   height: calc(100% - 5px);
   float: left;
-  font-size: 33pt;
-  padding-top: 5px;
+  font-size: 29pt;
+  padding-top: 12px;
   font-weight: bold;
   letter-spacing: -.6px;
 }
@@ -85,7 +85,7 @@ div.devpost-header-right{
 }
 div.devpost-text-container{
   width:calc(100% - 5px);
-  padding-left: 5px;
-  padding-top: 5px;
+  padding-left: 0px;
+  padding-top: 0px;
 
 }

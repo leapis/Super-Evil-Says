@@ -29,7 +29,7 @@ $query = $client->createQuery($client::QUERY_SELECT);
 $fuzzyLimit = 1; //range of fuzzy search (# of operations)- DON'T PUT ABOVE 2 FOR SAKE OF PERFORMANCE
 
 
-            //example data
+        //example data
 /*
 $_POST['rows'] = 3;
 $_POST['rowStart'] = 0;
