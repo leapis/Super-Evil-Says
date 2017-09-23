@@ -89,3 +89,10 @@ div.devpost-text-container{
   padding-top: 0px;
 
 }
+div.devpost-title{
+  font-family: "CoreSans";
+  font-size: 14pt;
+  color: rgb(247,147,1);
+  font-weight: bold;
+  margin-bottom: 3px;
+}

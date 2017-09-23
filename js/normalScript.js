@@ -40,6 +40,7 @@ function displayResults(user,title,desc,id,date,link,type){
         htmlAppendString += '<div class = "devpost-header-left">'+ user[i] + " said in response to a " + type[i] + " post: </div>"; //TODO: conditionals for threads
         htmlAppendString += '<div class = "devpost-header-right">' + date[i] + '<br>GO TO SOURCE &gt; </div>';
       htmlAppendString += '</div>';
+      htmlAppendString += '<div class = "devpost-title">Thread: ' + title[i] + '</div>';
       htmlAppendString += '<div class = "devpost-text-container">' + desc[i] + '</div>';
       htmlAppendString += '</div>';
   }
