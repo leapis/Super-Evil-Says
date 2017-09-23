@@ -51,25 +51,28 @@ div.devpost-container{
   border-top: 3px solid black;
 }
 div.devpost-header{
+  display:table;
   font-family: "Bebas";
   width:100%;
-  height: 50px;
   position:relative;
    letter-spacing: .8px;
+   height: auto;
 }
 div.devpost-header-left{
+  display: table-row;
   width: calc(100% - 105px);
-  height: calc(100% - 10px);
+  height: calc(100% - 5px);
   float: left;
-  font-size: 29pt;
-  padding-top: 10px;
+  font-size: 33pt;
+  padding-top: 5px;
   font-weight: bold;
   letter-spacing: -.6px;
 }
 div.devpost-header-right{
+  display: table-row;
   padding-top: 5px;
   width:90px;
-  height: calc(100% - 5px);
+  height: 45px;
   float:right;
   font-size: 12pt;
   background-color: Black;
@@ -77,6 +80,7 @@ div.devpost-header-right{
   padding-left: 10px;
   padding-right: 5px;
   cursor: pointer;
+  margin-bottom: 8.65px;
 
 }
 div.devpost-text-container{

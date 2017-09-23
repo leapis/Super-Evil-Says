@@ -1,7 +1,24 @@
 <?php
 
+header("Content-type: text/xml");
+
 require(__DIR__.'/init.php');
-htmlHeader();
+//htmlHeader();
+
+function parseToXML($htmlStr)
+{
+	$xmlStr=str_replace('<','&lt;',$htmlStr);
+	$xmlStr=str_replace('>','&gt;',$xmlStr);
+	$xmlStr=str_replace('"','&quot;',$xmlStr);
+	$xmlStr=str_replace("'",'&#39;',$xmlStr);
+	$xmlStr=str_replace("&",'&amp;',$xmlStr);
+	$xmlStr=str_replace("said: ?",' said:',$xmlStr);
+	//$xmlStr=str_replace(utf8_encode("’"),' ',$xmlStr);
+	return utf8_encode($xmlStr);
+}
+
+
+
 
 // create a client instance
 $client = new Solarium\Client($config);
@@ -10,6 +27,16 @@ $client = new Solarium\Client($config);
 $query = $client->createQuery($client::QUERY_SELECT);
 
 $fuzzyLimit = 1; //range of fuzzy search (# of operations)- DON'T PUT ABOVE 2 FOR SAKE OF PERFORMANCE
+
+
+            //example data
+/*
+$_POST['rows'] = 3;
+$_POST['rowStart'] = 0;
+$_POST['normalData'] = "mod,help,OP,size";
+$_POST['postType'] = "normal";
+$_POST['searchBy'] = "all";
+*/
 
 //recieve definite post data
 $rows = $_POST['rows']; //number of rows (changes depending on version called, normal or advanced)
@@ -60,11 +87,10 @@ else if ($_POST['postType'] == "advanced"){
 
 //query settings
 $query->setRows($rows); //output length
-$query->setFields(array('user','date','title', 'description', 'url', 'type', 'score')); //fields to return, don't return id
+$query->setFields(array('user','date','title', 'description', 'url', 'type', 'score', 'postID')); //fields to return, don't return id
 $query->addSort('date', $query::SORT_DESC); //sort- note that SCORE IS NOT PERFECT (not even close lol)
 
 //start building $input, our search
-echo $input; //tst. RM -RF LATER
 
 //set the query
 $query->setQuery($input);
@@ -74,12 +100,18 @@ $query->setQuery($input);
 $resultset = $client->execute($query);
 
 // display the total number of documents found by solr
-echo 'NumFound: '.$resultset->getNumFound();
+//echo 'NumFound: '.$resultset->getNumFound();
+
+
+//construct xml doc
+
+echo "<?xml version='1.0' encoding='UTF-8'?>";
+echo "<devposts>";
 
 // show documents using the resultset iterator
 foreach ($resultset as $document) {
 
-    echo '<hr/><table>';
+    echo '<post ';
 
     // the documents are also iterable, to get all fields
     foreach ($document as $field => $value) {
@@ -88,11 +120,11 @@ foreach ($resultset as $document) {
             $value = implode(', ', $value);
         }
 
-        echo '<tr><th>' . $field . '</th><td>' . $value . '</td></tr>';
+        echo $field . '="' . parseToXML($value) . '" ';
     }
 
-    echo '</table>';
+    echo '/>';
 }
-
-htmlFooter();
+echo "</devposts>";
+//htmlFooter();
 ?>
