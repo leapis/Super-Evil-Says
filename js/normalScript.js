@@ -20,11 +20,11 @@ function init(){ //performs initial load setup
     var xml = data.responseXML;
     var posts = xml.documentElement.getElementsByTagName("post"); //get all posts
     for (var i = 0; i < posts.length; i++) { //assigned each attribute of post[i] to each array[i]
-        user[i] = posts[i].getAttribute("user");
+        user[i] = posts[i].getAttribute("user"); //TODO: ensure back end users are represented as same for forums+reddit
         title[i] = posts[i].getAttribute("title");
         desc[i]= posts[i].getAttribute("description");
         id[i]= posts[i].getAttribute("postID");
-        date[i]= posts[i].getAttribute("date");
+        date[i]= posts[i].getAttribute("date"); //TODO: parse dateTime
         link[i]= posts[i].getAttribute("url");
         type[i]= posts[i].getAttribute("type");
     }
