@@ -1,9 +1,12 @@
-var currentRow = 20;
+var currentRow = 0;
 $(document).ready(function(){
   init();
 });
 function init(){
-  downloadUrl("php/solrcheck.php", "rows=1", function(data) {
+  var query = generateQuery(20,currentRow,'normal','mod,help,OP,size','all'); //rows,rowStart,postType,normalData,searchBy
+  console.log(query);
+  currentRow += 20;
+  downloadUrl("php/solrcheck.php", query, function(data) {
       var user = new Array();
       var title = new Array();
       var desc = new Array();
@@ -54,7 +57,6 @@ function downloadUrl(url, dataSent, callback) {
         new ActiveXObject('Microsoft.XMLHTTP') :
         new XMLHttpRequest;
 
-  //$.post( "php/solrcheck.php", {rows: 1, rowStart:0, postType:"normal",normalData:"mod,help,OP,size",searchBy:"all"}
     request.onreadystatechange = function() {
         if (request.readyState == 4) {
             request.onreadystatechange = doNothing;
@@ -64,9 +66,14 @@ function downloadUrl(url, dataSent, callback) {
     //request.overrideMimeType('application/xml');
     request.open('POST', url, true);
     request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    request.send('rows=20&rowStart=0&postType=normal&normalData=mod,help,OP,size&searchBy=all');
+    request.send(dataSent);
 }
 
 function doNothing(){
+//does nothing
+}
 
+function generateQuery(rows,rowStart,postType,normalData,searchBy){
+  var generated = 'rows=' + rows + '&rowStart='+rowStart+'&postType='+postType+'&normalData=' + normalData + '&searchBy=' + searchBy;
+  return generated; //example result: rows=20&rowStart=0&postType=normal&normalData=mod,help,OP,size&searchBy=all
 }
