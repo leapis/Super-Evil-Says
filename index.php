@@ -1,3 +1,3 @@
 <?php
-include("normalBody.php");
+include("normalBody.php"); //calls main page
 ?>

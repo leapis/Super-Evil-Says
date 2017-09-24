@@ -3,8 +3,8 @@
 header("Content-type: text/xml");
 
 require(__DIR__.'/init.php');
-//htmlHeader();
 
+//replaces certain characters and strings with XML-sanatized versions
 function parseToXML($htmlStr)
 {
 	$xmlStr=str_replace('<','&lt;',$htmlStr);
@@ -12,8 +12,6 @@ function parseToXML($htmlStr)
 	$xmlStr=str_replace('"','&quot;',$xmlStr);
 	$xmlStr=str_replace("'",'&#39;',$xmlStr);
 	$xmlStr=str_replace("&",'&amp;',$xmlStr);
-	$xmlStr=str_replace("said: ?",' said:',$xmlStr);
-	//$xmlStr=str_replace(utf8_encode("’"),' ',$xmlStr);
 	return utf8_encode($xmlStr);
 }
 
@@ -68,7 +66,7 @@ if ($_POST['postType'] == "normal") //for normal version of site
   $newData = $newData . $normalDataArray[$limiter + 1]; //clean up- fit last one in without comma at end
 
   switch($_POST['searchBy']){
-    case 'all':
+    case 'all': //search both title and description
       $input = "title:" . $newData . " OR description:". $newData;
       break;
     case 'title':
@@ -126,5 +124,4 @@ foreach ($resultset as $document) {
     echo '/>';
 }
 echo "</devposts>";
-//htmlFooter();
 ?>

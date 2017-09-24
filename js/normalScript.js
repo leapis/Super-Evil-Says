@@ -1,43 +1,44 @@
-var currentRow = 0;
+var currentRow = 0; //function to detect which "solr" row we're on
 $(document).ready(function(){
   init();
 });
-function init(){
-  var query = generateQuery(20,currentRow,'normal','mod,help,OP,size','all'); //rows,rowStart,postType,normalData,searchBy
-  console.log(query);
-  currentRow += 20;
-  downloadUrl("php/solrcheck.php", query, function(data) {
-      var user = new Array();
-      var title = new Array();
-      var desc = new Array();
-      var id = new Array();
-      var date = new Array();
-      var link = new Array();
-      var type = new Array();
+function init(){ //performs initial load setup
+  //generateQuery() builds query using rows,rowStart,postType,normalData,searchBy
+  var query = generateQuery(20,currentRow,'normal','mod,help,OP,size','all');
+  currentRow += 20; //TODO: set up actual row variable and have it increase by that
+  downloadUrl("php/solrcheck.php", query, function(data) { //POST request to php interfacing with solr
+    //these arrays house all the data we gain, might want to rework scope later depending on how powerful our JS will be vs php
+    var user = new Array();
+    var title = new Array();
+    var desc = new Array();
+    var id = new Array();
+    var date = new Array();
+    var link = new Array();
+    var type = new Array();
 
-      var xml = data.responseXML;
-      var posts = xml.documentElement.getElementsByTagName("post");
-      for (var i = 0; i < posts.length; i++) {
-          user[i] = posts[i].getAttribute("user");
-          title[i] = posts[i].getAttribute("title");
-          desc[i]= posts[i].getAttribute("description");
-          id[i]= posts[i].getAttribute("postID");
-          date[i]= posts[i].getAttribute("date");
-          link[i]= posts[i].getAttribute("url");
-          type[i]= posts[i].getAttribute("type");
-      }
-      displayResults(user,title,desc,id,date,link,type);
+    //start parsing the data we recieved into variables
+    var xml = data.responseXML;
+    var posts = xml.documentElement.getElementsByTagName("post"); //get all posts
+    for (var i = 0; i < posts.length; i++) { //assigned each attribute of post[i] to each array[i]
+        user[i] = posts[i].getAttribute("user");
+        title[i] = posts[i].getAttribute("title");
+        desc[i]= posts[i].getAttribute("description");
+        id[i]= posts[i].getAttribute("postID");
+        date[i]= posts[i].getAttribute("date");
+        link[i]= posts[i].getAttribute("url");
+        type[i]= posts[i].getAttribute("type");
+    }
+    displayResults(user,title,desc,id,date,link,type); //sends data over to DOM-creation function
   });
 }
 
 
-function displayResults(user,title,desc,id,date,link,type){
-  var htmlAppendString = "";
-  if (currentRow == 20){
-    $("#text-container").html("");
+function displayResults(user,title,desc,id,date,link,type){ //creates DOM for new data
+  var htmlAppendString = ""; //build DOM in here
+  if (currentRow == 20){ //if this is the first bit of data, erase temp/safety html already in place
+    $("#text-container").html(""); //erases temp/safety data
   }
-  for (var i = 0; i < user.length; i++){
-    console.log("creating " + id[i]);
+  for (var i = 0; i < user.length; i++){ //creates DOM from data. tabbing is as the html would be
     htmlAppendString += '<div class = "devpost-container" data-id="' + id[i] + '">';
       htmlAppendString += '<div class = "devpost-header">';
         htmlAppendString += '<div class = "devpost-header-left">'+ user[i] + " said in response to a " + type[i] + " post: </div>"; //TODO: conditionals for threads
@@ -47,11 +48,12 @@ function displayResults(user,title,desc,id,date,link,type){
       htmlAppendString += '<div class = "devpost-text-container">' + desc[i] + '</div>';
       htmlAppendString += '</div>';
   }
-  $("#text-container").append(htmlAppendString);
+  $("#text-container").append(htmlAppendString); //add our whole Atring htmlAppendString to current display
 
 
 }
 
+//TODO: comment the rest
 function downloadUrl(url, dataSent, callback) {
     var request = window.ActiveXObject ?
         new ActiveXObject('Microsoft.XMLHTTP') :
